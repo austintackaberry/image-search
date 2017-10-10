@@ -6,12 +6,13 @@ var MongoClient = require('mongodb').MongoClient;
 var URL = 'mongodb://austin:mongodb@ds157584.mlab.com:57584/austintackaberry'
 var db;
 var async = require('async');
+var num = 500;
 
 MongoClient.connect(URL, (err, database) => {
   if (err) return console.log(err)
   db = database;
-  app.listen(3000);
-  console.log('listening on 3000')
+  app.listen(4000);
+  console.log('listening on 4000')
 });
 
 var pathArr = [];
@@ -70,10 +71,13 @@ var q = async.queue(function (task, done) {
     }
   ],
   function() {
+    if (task.index === num) {
+      console.log("done");
+    }
     done();
   });
 });
 
-for (var i = 0; i < 500; i++) {
+for (var i = 0; i < num; i++) {
   q.push({index: i});
 }
